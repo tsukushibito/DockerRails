@@ -1,0 +1,32 @@
+﻿version: '3.7'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: "./docker/nginx/Dockerfile"
+    ports:
+      - "80:80"
+  rails:
+    build:
+      context: .
+      dockerfile: "./docker/rails/Dockerfile"
+    command: bundle exec unicorn -p 3000 -c /app/config/unicorn.rb
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./app:/app"
+    depends_on:
+      - mysql
+    env_file: "./common.env"
+  mysql:
+    build:
+      context: .
+      dockerfile: "./docker/mysql/Dockerfile"
+    ports:
+      - "3306:3306"
+    env_file: "./common.env"
+    volumes:
+      - "dbdata:/var/lib/mysql"
+
+volumes:
+  dbdata:
