@@ -9,7 +9,7 @@ services:
   rails:
     build:
       context: .
-      dockerfile: "./docker/rails/Dockerfile"
+      dockerfile: "./docker/rails/Dockerfile.dev"
     command: bundle exec unicorn -p 3000 -c /app/config/unicorn.rb
     ports:
       - "3000:3000"
