@@ -6,9 +6,11 @@ RUN apt-get update -qq && \
     nodejs \
     mysql-client
 RUN mkdir /app
+RUN groupadd -g 1000 rails && useradd -u 1000 -m -g rails rails
+USER rails:rails
 WORKDIR /app
-ADD ./app/Gemfile /app/Gemfile
-ADD ./app/Gemfile.lock /app/Gemfile.lock
+ADD --chown=rails:rails ./app/Gemfile /app/Gemfile
+ADD --chown=rails:rails ./app/Gemfile.lock /app/Gemfile.lock
 RUN bundle install -j4
 ADD ./app /app
 
